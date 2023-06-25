@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/admin")
 public class TestController {
-    @GetMapping("/test")
-    public String testAdmin(){
-        return "Admin route reached successfully";
+    @GetMapping("")
+    public String test() {
+        return "hey there";
     }
 }

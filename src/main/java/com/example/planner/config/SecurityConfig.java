@@ -16,9 +16,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     private final JwtFilter jwtFilter;
     private final AuthenticationProvider authenticationProvider;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .exceptionHandling()
+                .accessDeniedHandler(customAccessDeniedHandler)
+                .and()
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
@@ -28,7 +32,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers("/admin/**")
                 .hasAuthority("ADMIN")
-                .anyRequest()
+                .and()
+                .authorizeHttpRequests()
+                .requestMatchers("/vehicle/**")
                 .authenticated()
                 .and()
                 .sessionManagement()
